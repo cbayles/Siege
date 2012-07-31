@@ -10,7 +10,7 @@ namespace Siege.ServiceLocator.AutoMocker
     {
         public static List<IRegistration> Using(IMockAdapter adapter)
         {
-            AutoMocker mocker = new AutoMocker(adapter, typeof(TargetClass));
+            var mocker = new AutoMocker(adapter, typeof(TargetClass));
 
             var registrations = new List<IRegistration>();
             mocker.Register(typeof(TargetClass), registrations);
@@ -20,7 +20,7 @@ namespace Siege.ServiceLocator.AutoMocker
 
         public static List<IRegistration> Using(IMockAdapter adapter, IServiceLocator serviceLocator)
         {
-            AutoMocker mocker = new AutoMocker(serviceLocator, adapter, typeof(TargetClass));
+            var mocker = new AutoMocker(serviceLocator, adapter, typeof(TargetClass));
 
             var registrations = new List<IRegistration>();
             mocker.Register(typeof(TargetClass), registrations);
@@ -64,10 +64,10 @@ namespace Siege.ServiceLocator.AutoMocker
                     }
                 }
 
-                if (type.IsPrimitive || type == typeof(string) || type.IsEnum)
+                if (type.IsPrimitive || type == typeof(string) || type.IsEnum || type.IsValueType)
                 {
-                    object speicalCases = type == typeof(string) ? string.Empty : Activator.CreateInstance(type);
-                    return speicalCases;
+                    object specialCases = type == typeof(string) ? string.Empty : Activator.CreateInstance(type);
+                    return specialCases;
                 }
                 ConstructorInfo constructor = SelectConstructor(type);
                 if (constructor == null)
@@ -77,7 +77,7 @@ namespace Siege.ServiceLocator.AutoMocker
                     return instance;
                 }
                 var constructionParameters = new List<object>();
-                if (constructor.GetParameters().Count() > 0)
+                if (constructor.GetParameters().Any())
                 {
                     foreach (ParameterInfo info in constructor.GetParameters())
                     {
@@ -99,7 +99,7 @@ namespace Siege.ServiceLocator.AutoMocker
                     return null;
 
                 int maxNumberOfArg = constructorInfos.Max(c => c.GetParameters().Count());
-                var constructor = constructorInfos.Where(c => c.GetParameters().Count() == maxNumberOfArg).FirstOrDefault();
+                var constructor = constructorInfos.FirstOrDefault(c => c.GetParameters().Count() == maxNumberOfArg);
 
                 if (constructor == null)
                     throw new ApplicationException(string.Format("AutoMocker cannot find the correct constructor for type {0}", type.Name));
