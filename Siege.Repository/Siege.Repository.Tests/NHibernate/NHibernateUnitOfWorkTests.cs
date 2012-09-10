@@ -80,7 +80,7 @@ namespace Siege.Repository.Tests
                 session.Expect(s => s.Transaction).Return(transaction).Repeat.Any();
                 transaction.Expect(t => t.IsActive).Return(false).Repeat.Any();
                 session.Expect(s => s.BeginTransaction()).Return(transaction).Repeat.Once();
-                session.Expect(s => s.SaveOrUpdate(1));
+                session.Expect(s => s.SaveOrUpdate(1)).IgnoreArguments();
                 transaction.Expect(t => t.Commit()).Repeat.Once();
             }
 
@@ -98,7 +98,7 @@ namespace Siege.Repository.Tests
                 factory.Expect(f => f.OpenSession()).Return(session).Repeat.Any();
                 session.Expect(s => s.Transaction).Return(transaction).Repeat.Any();
                 transaction.Expect(t => t.IsActive).Return(true).Repeat.Any();
-                session.Expect(s => s.SaveOrUpdate(1));
+                session.Expect(s => s.SaveOrUpdate(1)).IgnoreArguments();
             }
 
             using (mocks.Playback())
@@ -117,7 +117,7 @@ namespace Siege.Repository.Tests
                 session.Expect(s => s.Transaction).Return(transaction).Repeat.Any();
                 transaction.Expect(t => t.IsActive).Return(false).Repeat.Any();
                 session.Expect(s => s.BeginTransaction()).Return(transaction).Repeat.Once();
-                session.Expect(s => s.SaveOrUpdate(1)).Throw(new Exception());
+                session.Expect(s => s.SaveOrUpdate(1)).IgnoreArguments().Throw(new Exception());
                 transaction.Expect(t => t.Rollback()).Repeat.Any();
 
                 session.Expect(s => s.Close()).Return(null);
