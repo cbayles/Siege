@@ -15,6 +15,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Castle.Facilities.FactorySupport;
 using Castle.MicroKernel;
 using Castle.MicroKernel.Registration;
@@ -37,7 +38,7 @@ namespace Siege.ServiceLocator.WindsorAdapter
         public WindsorAdapter(IKernel kernel)
         {
             this.kernel = kernel;
-            if(this.kernel.GetFacilities().OfType<FactorySupportFacility, IFacility>().Length == 0)
+            if(!this.kernel.GetFacilities().OfType<FactorySupportFacility>().Any())
             {
             	this.kernel.AddFacility<FactorySupportFacility>();
             }
