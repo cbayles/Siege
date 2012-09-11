@@ -15,6 +15,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Siege.ServiceLocator.Exceptions;
 using Siege.ServiceLocator.Native.ConstructionStrategies;
 using Siege.ServiceLocator.Native.Maps;
@@ -90,8 +91,8 @@ namespace Siege.ServiceLocator.Native
 			for(int i = 0; i < parameterCount; i++)
 			{
                 var arg = candidateParameters[i];
-
-				var value = Get(arg.ParameterType, null, new ConstructorParameter[0]);
+			    object value = null;
+                value = parameters.All(x => x.Name != arg.Name) ? Get(arg.ParameterType, null, new ConstructorParameter[0]) : parameters.First(x => x.Name == arg.Name).Value;
 
 				if (value != null)
 				{

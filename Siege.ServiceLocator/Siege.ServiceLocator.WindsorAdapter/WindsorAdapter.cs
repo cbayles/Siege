@@ -122,12 +122,12 @@ namespace Siege.ServiceLocator.WindsorAdapter
         public void Register(Type from, Type to)
         {
             if(kernel.HasComponent(from) || kernel.HasComponent(to)) return;
-            kernel.Register(Component.For(from).ImplementedBy(to).LifeStyle.Transient.Unless(Component.ServiceAlreadyRegistered));
+            kernel.Register(Component.For(from).ImplementedBy(to).LifeStyle.Transient.OnlyNewServices());
         }
 
         public void RegisterInstance(Type type, object instance)
         {
-            if(!kernel.HasComponent(type.ToString())) kernel.AddComponentInstance(type.ToString(), type, instance);
+            RegisterInstanceWithName(type, instance, type.ToString());
         }
 
         public void RegisterWithName(Type from, Type to, string name)
@@ -139,12 +139,12 @@ namespace Siege.ServiceLocator.WindsorAdapter
         public void RegisterInstanceWithName(Type type, object instance, string name)
         {
             if (kernel.HasComponent(name)) return;
-            kernel.Register(Component.For(type).Instance(instance).Named(name).Unless(Component.ServiceAlreadyRegistered));
+            kernel.Register(Component.For(type).Instance(instance).Named(name).OnlyNewServices());
         }
 
         public void RegisterFactoryMethod(Type type, Func<object> func)
         {
-            kernel.Register(Component.For(type).FactoryMethod(kernel, type, func).LifeStyle.Transient.Unless(Component.ServiceAlreadyRegistered));
+            kernel.Register(Component.For(type).FactoryMethod(kernel, type, func).LifeStyle.Transient.OnlyNewServices());
         }
     }
 
@@ -154,7 +154,7 @@ namespace Siege.ServiceLocator.WindsorAdapter
        {
            Type item = typeof(InternalFactory<>).MakeGenericType(type);
            var factoryName = item.FullName;
-           kernel.Register(Component.For(item).Named(factoryName).Instance(new GenericFactory(factory)).LifeStyle.Transient.Unless(Component.ServiceAlreadyRegistered));  
+           kernel.Register(Component.For(item).Named(factoryName).Instance(new GenericFactory(factory)).LifeStyle.Transient.OnlyNewServices());  
            reg.Configuration(Attrib.ForName("factoryId").Eq(factoryName), Attrib.ForName("factoryCreate").Eq("Create"));  
            return reg;  
        }  

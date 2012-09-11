@@ -36,6 +36,36 @@ namespace Siege.ServiceLocator.UnitTests
 			Assert.AreSame(argument, ((DependsOnInterface) instance).Argument);
 		}
 
+        [Test]
+        public void ShouldUseUnregisteredStringArgument()
+        {
+            var argument = "Some Value";
+            var arguments = new List<IResolutionArgument>
+                                {
+                                    new ConstructorParameter {Name = "argument", Value = argument}
+                                };
+            locator.Register(Given<DependsOnType<string>>.Then<DependsOnType<string>>());
+            locator.Register(Given<DependsOnType<string>>.ConstructWith(arguments));
+            var instance = locator.GetInstance<DependsOnType<string>>();
+
+            Assert.AreEqual(argument, instance.Argument);
+        }
+
+        [Test]
+        public void ShouldUseUnregisteredIntArgument()
+        {
+            var argument = 1;
+            var arguments = new List<IResolutionArgument>
+                                {
+                                    new ConstructorParameter {Name = "argument", Value = argument}
+                                };
+            locator.Register(Given<DependsOnType<int>>.Then<DependsOnType<int>>());
+            locator.Register(Given<DependsOnType<int>>.ConstructWith(arguments));
+            var instance = locator.GetInstance<DependsOnType<int>>();
+
+            Assert.AreEqual(argument, instance.Argument);
+        }
+
 		[Test]
 		public void ShouldUseMultipleUnregisteredConstructorArgument()
 		{

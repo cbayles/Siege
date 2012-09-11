@@ -29,4 +29,19 @@ namespace Siege.ServiceLocator.UnitTests.TestClasses
             get { return argument; }
         }
     }
+
+    public class DependsOnType<T> : ITestInterface
+    {
+        private readonly T argument;
+
+        public DependsOnType(T argument)
+        {
+            this.argument = argument;
+        }
+
+        public T Argument
+        {
+            get { return argument; }
+        }
+    }
 }
