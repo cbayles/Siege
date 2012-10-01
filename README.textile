@@ -1,3 +1,9 @@
+h1. Siege proudly uses Jetbrains tools!
+
+!http://www.jetbrains.com/resharper/features/linklogos.jsp!
+!http://www.jetbrains.com/profiler/features/linklogos.jsp!
+!http://www.jetbrains.com/dotcover/features/linklogos.jsp!
+
 h1. Siege - A set of general abstraction frameworks for .NET
 
 "Wiki":http://github.com/MarcusTheBold/Siege/wiki
