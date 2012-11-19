@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{83378559-66BB-480C-A23C-629B5A42CBAA}</ProjectGuid>
+    <ProjectGuid>{176A3AF5-B865-4DE4-99EF-754AA8CCC5DF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Siege.ServiceLocator.WCF</RootNamespace>
-    <AssemblyName>Siege.ServiceLocator.WCF</AssemblyName>
+    <RootNamespace>Siege.Repository.WCF</RootNamespace>
+    <AssemblyName>Siege.Repository.WCF</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -34,11 +34,18 @@
     <Reference Include="Microsoft.Practices.ServiceLocation">
       <HintPath>..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
+    <Reference Include="Siege.Repository">
+      <HintPath>..\packages\Siege.Repository.1.0.3\lib\net40\Siege.Repository.dll</HintPath>
+    </Reference>
+    <Reference Include="Siege.ServiceLocator">
+      <HintPath>..\packages\Siege.ServiceLocator.1.1.2\lib\net40\Siege.ServiceLocator.dll</HintPath>
+    </Reference>
+    <Reference Include="Siege.ServiceLocator.WCF">
+      <HintPath>..\packages\Siege.ServiceLocator.WCF.1.0.0\lib\net40\Siege.ServiceLocator.WCF.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.ServiceModel" />
-    <Reference Include="System.ServiceModel.Activation" />
-    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -47,22 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WcfContextExecutionStore.cs" />
-    <Compile Include="WcfContextStore.cs" />
-    <Compile Include="WcfOperationContext.cs" />
-    <Compile Include="WcfResolutionStore.cs" />
-    <Compile Include="WcfServiceLocator.cs" />
-    <Compile Include="WcfServiceLocatorBehavior.cs" />
-    <Compile Include="WcfServiceLocatorInstanceProvider.cs" />
-    <Compile Include="WcfServiceLocatorServiceHost.cs" />
-    <Compile Include="WcfServiceLocatorServiceHostFactory.cs" />
-    <Compile Include="WcfServiceLocatorStore.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Siege.ServiceLocator\Siege.ServiceLocator.csproj">
-      <Project>{A454551D-78AA-4BCA-BE97-5EBA0C2DEB56}</Project>
-      <Name>Siege.ServiceLocator</Name>
-    </ProjectReference>
+    <Compile Include="WcfUnitOfWorkStore.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
