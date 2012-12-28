@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>Siege.ServiceLocator.WCF</id>
+        <version>1.0.1</version>
+        <title>Siege.ServiceLocator.WCF</title>
+        <authors>Marcus Bratton</authors>
+        <owners>Marcus Bratton</owners>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>WCF Integration for Siege.ServiceLocator</description>
+        <copyright>2012 Marcus Bratton</copyright>
+        <dependencies>
+            <dependency id="Siege.ServiceLocator" version="1.1.3" />
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="..\Siege.ServiceLocator.WCF\bin\Debug\Siege.ServiceLocator.WCF.dll" target="lib\net40\Siege.ServiceLocator.WCF.dll" />
+    </files>
+</package>

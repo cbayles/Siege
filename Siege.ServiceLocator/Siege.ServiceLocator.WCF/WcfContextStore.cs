@@ -18,7 +18,7 @@ namespace Siege.ServiceLocator.WCF
             {
                 var items = new List<object>();
 
-                foreach (string item in WcfOperationContext.Current.Items)
+                foreach (string item in WcfOperationContext.Current.Items.Keys)
                 {
                     items.Add(WcfOperationContext.Current.Items[item]);
                 }

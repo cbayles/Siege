@@ -59,13 +59,13 @@
     <Compile Include="WcfServiceLocatorStore.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Siege.ServiceLocator\Siege.ServiceLocator.csproj">
       <Project>{A454551D-78AA-4BCA-BE97-5EBA0C2DEB56}</Project>
       <Name>Siege.ServiceLocator</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
