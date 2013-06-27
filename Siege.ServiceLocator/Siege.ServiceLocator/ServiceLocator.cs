@@ -62,7 +62,9 @@ namespace Siege.ServiceLocator
             serviceLocator.RegisterInstance(typeof(IExecutionStore), this.store.Get<IExecutionStore>());
             serviceLocator.RegisterInstance(typeof(IResolutionStore), this.store.Get<IResolutionStore>());
 
-            Register(Load.FromAssembliesIn(AppDomain.CurrentDomain.SetupInformation.PrivateBinPath + @"\Plugins\", ".plugin"));
+            var binPath = AppDomain.CurrentDomain.SetupInformation.PrivateBinPath
+                       ?? AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
+            Register(Load.FromAssembliesIn(binPath + @"\Plugins\", ".plugin"));
         }
 
         public object GetInstance(Type type, params IResolutionArgument[] arguments)
