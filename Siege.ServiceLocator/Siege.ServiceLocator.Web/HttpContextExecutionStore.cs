@@ -15,6 +15,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web;
 using Siege.ServiceLocator.EventHandlers;
 using Siege.ServiceLocator.InternalStorage;
@@ -51,13 +52,9 @@ namespace Siege.ServiceLocator.Web
         {
             get
             {
-                List<Type> types = new List<Type>();
-                foreach (object item in HttpContext.Current.Items.Values)
-                {
-                    if (item is Type) types.Add((Type)item);
-                }
+                var resolutionList = (List<Type>)HttpContext.Current.Items["ExecutionStore"];
 
-                return types;
+                return resolutionList ?? new List<Type>();
             }
         }
 
@@ -93,7 +90,13 @@ namespace Siege.ServiceLocator.Web
 
         public void AddRequestedType(Type type)
         {
-            HttpContext.Current.Items.Add("ExecutionStore" + Guid.NewGuid(), type);
+            var resolutionList = (List<Type>)HttpContext.Current.Items["ExecutionStore"];
+
+            resolutionList = resolutionList ?? new List<Type>();
+            resolutionList.Add(type);
+
+            HttpContext.Current.Items["ExecutionStore"] = resolutionList;
+
             Increment();
         }
 
@@ -107,13 +110,14 @@ namespace Siege.ServiceLocator.Web
             HttpContext.Current.Items["executionCount"] = Index - 1;
             if (Index == 0)
             {
+                HttpContext.Current.Items.Remove("ResolutionStore");
                 store.SetStore<IResolutionStore>(new HttpResolutionStore());
             }
         }
 
         public void Dispose()
         {
-            
+
         }
     }
 }

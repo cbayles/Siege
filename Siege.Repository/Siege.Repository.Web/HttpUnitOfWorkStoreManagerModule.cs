@@ -13,8 +13,7 @@ namespace Siege.Repository.Web
 		{
 			if (!(context is IServiceLocatorAccessor))
 			{
-				throw new HttpUnitOfWorkStoreManagerModuleException(
-					"HttpApplication must inherit from IServiceLocatorAccessor when using HttpUnitOfWorkStoreManagerModule");
+				throw new HttpUnitOfWorkStoreManagerModuleException("HttpApplication must inherit from IServiceLocatorAccessor when using HttpUnitOfWorkStoreManagerModule");
 			}
 
 			serviceLocator = ((IServiceLocatorAccessor)context).ServiceLocator;

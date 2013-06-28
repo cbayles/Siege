@@ -26,9 +26,7 @@ namespace Siege.Repository.Web
         {
             if (SessionExists())
             {
-                var unitsOfWork =
-                    HttpContext.Current.Items.Keys.OfType<string>().Where(
-                        x => x.StartsWith("HttpUnitOfWorkStore.CurrentUnitOfWork_")).ToList();
+                var unitsOfWork = HttpContext.Current.Items.Keys.OfType<string>().Where(x => x.StartsWith("HttpUnitOfWorkStore.CurrentUnitOfWork_")).ToList();
 
                 foreach (string key in unitsOfWork)
                 {
@@ -46,9 +44,7 @@ namespace Siege.Repository.Web
         {
             if (SessionExists())
             {
-                return
-                    HttpContext.Current.Items["HttpUnitOfWorkStore.CurrentUnitOfWork_" + typeof(TDatabase)]
-                    as IUnitOfWork;
+                return HttpContext.Current.Items["HttpUnitOfWorkStore.CurrentUnitOfWork_" + typeof(TDatabase)] as IUnitOfWork;
             }
             return null;
         }
@@ -58,8 +54,7 @@ namespace Siege.Repository.Web
         {
             if (SessionExists())
             {
-                HttpContext.Current.Items["HttpUnitOfWorkStore.CurrentUnitOfWork_" + typeof(TDatabase)] =
-                    unitOfWork;
+                HttpContext.Current.Items["HttpUnitOfWorkStore.CurrentUnitOfWork_" + typeof(TDatabase)] = unitOfWork;
             }
         }
         

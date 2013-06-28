@@ -31,30 +31,26 @@ namespace Siege.ServiceLocator.Web
 
         public void Add(List<IResolutionArgument> contextItem)
         {
-            HttpContext.Current.Items.Add("Resolution" + Guid.NewGuid(), contextItem);
+            var resolutionList = (List<IResolutionArgument>)HttpContext.Current.Items["ResolutionStore"];
+
+            resolutionList = resolutionList ?? new List<IResolutionArgument>();
+            resolutionList.AddRange(contextItem);
+
+            HttpContext.Current.Items["ResolutionStore"] = resolutionList;
         }
 
         public void Clear()
         {
-            var list = HttpContext.Current.Items.Keys.Cast<object>().Where(key => key.ToString().StartsWith("Resolution")).ToList();
-
-            list.ForEach(k => HttpContext.Current.Items.Remove(k));
+            HttpContext.Current.Items.Remove("ResolutionStore");
         }
 
         public List<IResolutionArgument> Items
         {
             get
             {
-                var items = new List<IResolutionArgument>();
+                var resolutionList = (List<IResolutionArgument>)HttpContext.Current.Items["ResolutionStore"];
 
-                foreach (object keyObject in HttpContext.Current.Items.Keys)
-                {
-                    var key = keyObject as string;
-                    if (!String.IsNullOrEmpty(key) && key.StartsWith("Resolution"))
-                        items.AddRange((List<IResolutionArgument>)HttpContext.Current.Items[key]);
-                }
-
-                return items;
+                return resolutionList ?? new List<IResolutionArgument>();
             }
         }
 

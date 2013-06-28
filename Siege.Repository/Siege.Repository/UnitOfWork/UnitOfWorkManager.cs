@@ -27,6 +27,7 @@ namespace Siege.Repository.UnitOfWork
     public abstract class UnitOfWorkManager : IUnitOfWorkManager
     {
         protected readonly Dictionary<Type, UnitOfWorkBundle> stores = new Dictionary<Type, UnitOfWorkBundle>();
+        private readonly object locker = new object();
 
         public IUnitOfWork For<TDatabase>() where TDatabase : IDatabase
 		{
@@ -34,7 +35,10 @@ namespace Siege.Repository.UnitOfWork
 
             if (bundle.Store.CurrentFor<TDatabase>() == null)
             {
-                bundle.Store.SetUnitOfWork<TDatabase>(bundle.Factory.Create());
+                lock (locker)
+                {
+                    if (bundle.Store.CurrentFor<TDatabase>() == null) bundle.Store.SetUnitOfWork<TDatabase>(bundle.Factory.Create());
+                }
             }
 
             return bundle.Store.CurrentFor<TDatabase>();

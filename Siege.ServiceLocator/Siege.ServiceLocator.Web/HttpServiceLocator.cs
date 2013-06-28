@@ -19,8 +19,7 @@ namespace Siege.ServiceLocator.Web
 {
     public class HttpServiceLocator : ServiceLocator
     {
-        protected HttpServiceLocator(IServiceLocatorAdapter serviceLocator, IServiceLocatorStore store)
-            : base(serviceLocator, store)
+        protected HttpServiceLocator(IServiceLocatorAdapter serviceLocator, IServiceLocatorStore store) : base(serviceLocator, store)
         {
         }
 

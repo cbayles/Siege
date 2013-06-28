@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Siege.Repository", "Siege.Repository\Siege.Repository.csproj", "{DFF4777E-D6A1-4EBE-BDCB-21180AC9EAB1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Siege.Repository.MSSQL", "Siege.Repository.MSSQL\Siege.Repository.MSSQL.csproj", "{2C7FD68D-E2FF-4726-B7F3-0364C4B19485}"
@@ -14,6 +14,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Siege.Repository.EntityFramework", "Siege.Repository.EntityFramework\Siege.Repository.EntityFramework.csproj", "{7BA2681D-C6F0-4EA3-980C-18F1F7DAE2A1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Siege.Repository.WCF", "Siege.Repository.WCF\Siege.Repository.WCF.csproj", "{176A3AF5-B865-4DE4-99EF-754AA8CCC5DF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Siege.Repository.Mongo", "Siege.Repository.Mongo\Siege.Repository.Mongo.csproj", "{84114D09-E888-4BA8-8FB0-C2A750D36E1F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -77,6 +79,12 @@ Global
 		{176A3AF5-B865-4DE4-99EF-754AA8CCC5DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{176A3AF5-B865-4DE4-99EF-754AA8CCC5DF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{176A3AF5-B865-4DE4-99EF-754AA8CCC5DF}.Release|x86.ActiveCfg = Release|Any CPU
+		{84114D09-E888-4BA8-8FB0-C2A750D36E1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84114D09-E888-4BA8-8FB0-C2A750D36E1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84114D09-E888-4BA8-8FB0-C2A750D36E1F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{84114D09-E888-4BA8-8FB0-C2A750D36E1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84114D09-E888-4BA8-8FB0-C2A750D36E1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84114D09-E888-4BA8-8FB0-C2A750D36E1F}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
