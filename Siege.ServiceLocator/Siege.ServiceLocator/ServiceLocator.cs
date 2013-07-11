@@ -64,7 +64,7 @@ namespace Siege.ServiceLocator
 
             var binPath = AppDomain.CurrentDomain.SetupInformation.PrivateBinPath
                        ?? AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
-            Register(Load.FromAssembliesIn(binPath + @"\Plugins\", ".plugin"));
+            Register(Load.FromAssembliesIn(binPath, binPath + @"\Plugins\", ".plugin"));
         }
 
         public object GetInstance(Type type, params IResolutionArgument[] arguments)
