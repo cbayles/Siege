@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace Siege.Repository.Mapping
@@ -42,6 +41,6 @@ namespace Siege.Repository.Mapping
             return this.mappings[type];
         }
 
-        public IEnumerable MappedTypes { get { return this.mappings.Keys;  } }
+        public IEnumerable<Type> MappedTypes { get { return this.mappings.Keys;  } }
     }
 }

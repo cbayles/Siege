@@ -64,6 +64,8 @@
     <Compile Include="Finders\QuerySpecification.cs" />
     <Compile Include="Finders\Query.cs" />
     <Compile Include="IDatabase.cs" />
+    <Compile Include="IDialect.cs" />
+    <Compile Include="IExportable.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="Mapping\Conventions\ClassConvention.cs" />
     <Compile Include="Mapping\Conventions\ComponentConvention.cs" />
@@ -81,6 +83,7 @@
     <Compile Include="Mapping\DomainMap.cs" />
     <Compile Include="Mapping\DomainMapper.cs" />
     <Compile Include="Mapping\DomainMapping.cs" />
+    <Compile Include="ISqlExporter.cs" />
     <Compile Include="Mapping\PropertyMappings\ForeignRelationshipMapping.cs" />
     <Compile Include="Mapping\IDomainMapping.cs" />
     <Compile Include="Mapping\IElementMapping.cs" />

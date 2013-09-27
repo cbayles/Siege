@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Siege.Repository</id>
+    <version>1.0.3</version>
+    <title>Siege.Repository</title>
+    <authors>Marcus Bratton</authors>
+    <owners>Marcus Bratton</owners>
+    <licenseUrl>https://github.com/MarcusTheBold/Siege/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/MarcusTheBold/Siege/tree/master/Siege.Repository/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Repository Pattern Framework for integrating with multiple data sources</description>
+    <copyright>Copyright (c) 2009, 2010, 2011, 2012, Marcus Bratton.  All Rights Reserved</copyright>
+  </metadata>
+</package>

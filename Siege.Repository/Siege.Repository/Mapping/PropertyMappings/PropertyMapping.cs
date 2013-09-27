@@ -4,19 +4,15 @@ using System.Reflection;
 
 namespace Siege.Repository.Mapping.PropertyMappings
 {
-    public class PropertyMapping<TClass, TType> : ElementMapping<TClass, TType>, IPropertyMapping
+    public class PropertyMapping<TClass, TType> : PropertyMapping
     {
-        public PropertyMapping(Expression<Func<TClass, TType>> expression, string name) : base(expression)
+        public PropertyMapping(Expression<Func<TClass, TType>> expression, string name) : base(((MemberExpression)expression.Body).Member as PropertyInfo, name)
         {
-            this.ColumnName = name;
         }
 
-        public PropertyMapping(Expression<Func<TClass, TType>> expression) : base(expression)
+        public PropertyMapping(Expression<Func<TClass, TType>> expression) : base(((MemberExpression)expression.Body).Member as PropertyInfo)
         {
-            this.ColumnName = Property.Name;
         }
-
-        public string ColumnName { get; protected set; }
     }
 
     public class PropertyMapping : ElementMapping, IPropertyMapping
@@ -31,5 +27,10 @@ namespace Siege.Repository.Mapping.PropertyMappings
         }
 
         public virtual string ColumnName { get; protected set; }
+
+        public override void ExportTo(IDialect exporter)
+        {
+            exporter.CreateField(this);
+        }
     }
 }

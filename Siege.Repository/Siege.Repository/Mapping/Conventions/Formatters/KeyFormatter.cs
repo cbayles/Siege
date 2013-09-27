@@ -6,6 +6,8 @@ namespace Siege.Repository.Mapping.Conventions.Formatters
     {
         private Func<T, string> formatter;
 
+        public Formatter(){}
+        
         public void FormatAs(Func<T, string> formatter)
         {
             this.formatter = formatter;
@@ -13,6 +15,7 @@ namespace Siege.Repository.Mapping.Conventions.Formatters
 
         public string Format(T property)
         {
+            if(formatter == null) throw new Exception("No formatter has been specified.");
             return this.formatter(property);
         }
     }

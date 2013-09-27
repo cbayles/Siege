@@ -22,63 +22,65 @@ using Siege.ServiceLocator.Registrations.Conventions;
 namespace Siege.ServiceLocator.Registrations.AutoScanner
 {
     public class AutoScanningConvention : IConvention
-	{
-		private readonly List<Assembly> assemblies = new List<Assembly>();
-		private readonly List<string> namespaces = new List<string>();
+    {
+        private readonly List<Assembly> assemblies = new List<Assembly>();
+        private readonly List<string> namespaces = new List<string>();
         private readonly List<Type> baseTypes = new List<Type>();
 
         protected void FromAssemblyContaining<TType>()
         {
-            this.assemblies.Add(typeof (TType).Assembly);
+            this.assemblies.Add(typeof(TType).Assembly);
         }
 
-		protected void FromNamespaceOf<TType>()
-		{
-			this.namespaces.Add(typeof(TType).Namespace);
-		}
+        protected void FromNamespaceOf<TType>()
+        {
+            this.namespaces.Add(typeof(TType).Namespace);
+        }
 
         protected void ForTypesImplementing<TType>()
         {
             baseTypes.Add(typeof(TType));
         }
-		
-		protected virtual List<IRegistration> CreateRegistrations()
-		{
+
+        protected virtual List<IRegistration> CreateRegistrations()
+        {
             var registrations = new List<IRegistration>();
 
             foreach (var type in this.assemblies.Select(a => a.GetExportedTypes()).SelectMany(types => types))
             {
-				if (type.IsGenericTypeDefinition || type.IsInterface) continue;
-            	if (this.baseTypes.Count > 0)
-            	{
-            		registrations.AddRange((from baseType in this.baseTypes
-            		                        where baseType.IsAssignableFrom(type)
-											&& !baseType.IsGenericTypeDefinition
-											&& (namespaces.Count == 0 || namespaces.Contains(type.Namespace))
-            		                        select new AutoScannedRegistration(baseType, type)).Cast<IRegistration>());
-            	}
-            	else
-            	{
-					if (namespaces.Count == 0 || namespaces.Contains(type.Namespace))
-					{
-						foreach (var @interface in type.GetInterfaces())
-						{
-							if (@interface.IsGenericTypeDefinition) continue;
-            				registrations.Add(new AutoScannedRegistration(@interface, type));
-						}
+                if (type.IsGenericTypeDefinition || type.IsInterface) continue;
+                if (this.baseTypes.Count > 0)
+                {
+                    var tuples = (from baseType in this.baseTypes
+                                  where baseType.IsAssignableFrom(type)
+                                        && !baseType.IsGenericTypeDefinition
+                                        && (namespaces.Count == 0 || namespaces.Contains(type.Namespace))
+                                  select new[] { new AutoScannedRegistration(type, type), new AutoScannedRegistration(baseType, type) });
 
-						if (type.BaseType != typeof(object) 
-							&& !type.BaseType.IsGenericTypeDefinition 
-							&& !type.BaseType.IsAbstract)
-						{
-							registrations.Add(new AutoScannedRegistration(type.BaseType, type));
-						}
-					}
-            	}
+                    foreach (var set in tuples.ToList()) registrations.AddRange(set);
+                }
+                else
+                {
+                    if (namespaces.Count == 0 || namespaces.Contains(type.Namespace))
+                    {
+                        foreach (var @interface in type.GetInterfaces())
+                        {
+                            if (@interface.IsGenericTypeDefinition) continue;
+                            registrations.Add(new AutoScannedRegistration(@interface, type));
+                        }
+
+                        if (type.BaseType != typeof(object)
+                            && !type.BaseType.IsGenericTypeDefinition
+                            && !type.BaseType.IsAbstract)
+                        {
+                            registrations.Add(new AutoScannedRegistration(type.BaseType, type));
+                        }
+                    }
+                }
             }
 
-			return registrations;
-		}
+            return registrations;
+        }
 
         public Action<IServiceLocator> Build()
         {

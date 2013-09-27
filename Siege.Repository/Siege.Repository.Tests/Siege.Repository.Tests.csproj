@@ -102,6 +102,7 @@
     <Compile Include="MappingTests\EntityIdentifier.cs" />
     <Compile Include="MappingTests\IdIdentifier.cs" />
     <Compile Include="MSSQL\InsertCommandTests.cs" />
+    <Compile Include="MSSQL\SqlExporterTests.cs" />
     <Compile Include="NHibernate\NHibernateConventionTests.cs" />
     <Compile Include="NHibernate\NHibernateRepositoryTests.cs" />
     <Compile Include="NHibernate\NHibernateUnitOfWorkManagerTests.cs" />
@@ -131,6 +132,11 @@
       <Project>{DFF4777E-D6A1-4EBE-BDCB-21180AC9EAB1}</Project>
       <Name>Siege.Repository</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="MSSQL\SqlOutput.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -18,5 +18,10 @@ namespace Siege.Repository.Mapping.PropertyMappings
 
             return id.GetValue(instance, new object[0]);
         }
+
+        public override void ExportTo(IDialect exporter)
+        {
+            exporter.CreateForeignKey(this, id);
+        }
     }
 }

@@ -1,0 +1,29 @@
+﻿CREATE TABLE [siege].[Products]
+(
+	ProductID int,
+	Price decimal,
+	Name nvarchar(50),
+)
+
+CREATE TABLE [siege].[OrderItems]
+(
+	OrderItemID int,
+	ProductID int,
+	OrderID int,
+)
+
+CREATE TABLE [siege].[Orders]
+(
+	OrderID int,
+	DateCreated DateTime,
+	CustomerID int,
+)
+
+CREATE TABLE [siege].[Customers]
+(
+	CustomerID int,
+	DateCreated DateTime,
+	FirstName nvarchar(50),
+	LastName nvarchar(50),
+)
+

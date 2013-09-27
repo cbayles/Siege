@@ -16,7 +16,13 @@ namespace Siege.Repository.Mapping
 
         public DomainMapping<TClass> MapID<TType>(Expression<Func<TClass, TType>> expression)
         {
-            this.subMappings.Add(new IdMapping<TClass, TType>(expression));
+            this.subMappings.Add(new IdMapping<TClass, TType>(expression, (((MemberExpression)expression.Body).Member as PropertyInfo).Name));
+            return this;
+        }
+
+        public DomainMapping<TClass> MapID<TType>(Expression<Func<TClass, TType>> expression, Formatter<Type> columnName)
+        {
+            this.subMappings.Add(new IdMapping<TClass, TType>(expression, columnName));
             return this;
         }
 
@@ -53,11 +59,22 @@ namespace Siege.Repository.Mapping
             return this;
         }
 
+        public DomainMapping<TClass> MapList<TType>(Expression<Func<TClass, TType>> expression)
+        {
+            if (!(expression.Body is MemberExpression)) throw new ArgumentException("Only properties can be mapped in this fashion");
+            var property = ((MemberExpression)expression.Body).Member as PropertyInfo;
+
+            var listMapping = new ListMapping(property, type, typeof(TClass));
+            this.subMappings.Add(listMapping);
+
+            return this;
+        }
+
     }
 
     public class DomainMapping : IDomainMapping
     {
-        private readonly Type type;
+        protected readonly Type type;
         protected Table table = new Table();
         protected readonly List<IElementMapping> subMappings = new List<IElementMapping>();
         public Table Table { get { return table; } }
@@ -71,7 +88,12 @@ namespace Siege.Repository.Mapping
         {
             get { return this.subMappings; }
         }
-        
+
+        public Type Type
+        {
+            get { return type; }
+        }
+
         public DomainMapping MapProperty(PropertyInfo property)
         {
             this.subMappings.Add(new PropertyMapping(property));
@@ -87,7 +109,7 @@ namespace Siege.Repository.Mapping
             return this;
         }
 
-        public DomainMapping MapID(PropertyInfo property, Type type, Formatter<Type> keyFormatter)
+        public DomainMapping MapID(PropertyInfo property, Formatter<Type> keyFormatter)
         {
             var id = new IdMapping(property, type, keyFormatter);
             this.subMappings.Add(id);
@@ -95,7 +117,7 @@ namespace Siege.Repository.Mapping
             return this;
         }
 
-        public void Map(Action<DomainMapping> mapping)
+        void IDomainMapping.Map(Action<DomainMapping> mapping)
         {
             mapping(this);
         }
@@ -109,13 +131,28 @@ namespace Siege.Repository.Mapping
             return this;
         }
 
+        public DomainMapping MapForeignRelationship(DomainMapper masterMap, PropertyInfo property, Type type, Formatter<PropertyInfo> keyFormatter)
+        {
+            var mappedType = masterMap.For(type);
+            var foreignKey = mappedType.SubMappings.OfType<IdMapping>().First().Property;
+            var foreignMapping = new ForeignRelationshipMapping(property, foreignKey, keyFormatter);
+            this.subMappings.Add(foreignMapping);
+            return this;
+        }
+
         public DomainMapping MapList(DomainMapper masterMap, PropertyInfo property, Type type, Type parentType, Formatter<PropertyInfo> keyFormatter)
         {
-            var foreignRelationshipMapping = new ReverseForeignRelationshipMapping(property, type, parentType, keyFormatter);
-            var listMapping = new ListMapping(property, type, foreignRelationshipMapping);
+            var listMapping = new ListMapping(property, type, parentType, keyFormatter);
             this.subMappings.Add(listMapping);
-            //masterMap.For(type).Map(mapping => mapping.MapParentRelationship(this.type));
             return this;
+        }
+
+        public void ExportTo(IDialect exporter)
+        {
+            foreach (var mapping in this.subMappings)
+            {
+                mapping.ExportTo(exporter);
+            }
         }
     }
 }

@@ -1,20 +1,11 @@
-﻿using System;
-using System.Linq.Expressions;
-using System.Reflection;
+﻿using System.Reflection;
+using Siege.Repository.Mapping.Conventions.Formatters;
 
 namespace Siege.Repository.Mapping.PropertyMappings
 {
-    public class ElementMapping<TClass, TType> : ElementMapping
+    public abstract class ElementMapping : IElementMapping
     {
-        public ElementMapping(Expression<Func<TClass, TType>> expression) : base(((MemberExpression)expression.Body).Member as PropertyInfo)
-        {
-            if (!(expression.Body is MemberExpression)) throw new ArgumentException("Only properties can be mapped in this fashion");
-        }
-    }
-
-    public class ElementMapping : IElementMapping
-    {
-        public ElementMapping(PropertyInfo property)
+        protected ElementMapping(PropertyInfo property)
         {
             this.Property = property;
         }
@@ -25,5 +16,12 @@ namespace Siege.Repository.Mapping.PropertyMappings
         {
             return this.Property.GetValue(item, new object[0]);
         }
+
+        public virtual void ExportTo(IDialect exporter)
+        {
+            
+        }
+
+        public virtual void Build(DomainMapper mapper, Formatter<PropertyInfo> formatter) { }
     }
 }

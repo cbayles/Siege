@@ -23,7 +23,7 @@ namespace Siege.Repository.Mapping.Conventions.Handlers
 
         public void Handle(PropertyInfo property, Type type, DomainMapping mapper)
         {
-            mapper.MapID(property, type, primaryKeyFormatter);
+            mapper.MapID(property, primaryKeyFormatter);
         }
     }
 }
