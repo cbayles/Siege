@@ -85,10 +85,9 @@ namespace Siege.ServiceLocator
                 var registration = registrationStore.GetRegistrationForTypeAndName(type, key);
                 return registration.ResolveWith(serviceLocator, store, postResolutionPipeline);
             }
-            
-            var stores = store.All<IResolutionStore>().ToList();
-            var items = new List<IResolutionArgument>();
-            stores.ForEach(x => items.AddRange(x.Items));
+
+            var resolutionStore = store.Get<IResolutionStore>();
+            var items = resolutionStore.Items;
                 
             return serviceLocator.GetInstance(type, key, items.OfType<ConstructorParameter, IResolutionArgument>());
         }
