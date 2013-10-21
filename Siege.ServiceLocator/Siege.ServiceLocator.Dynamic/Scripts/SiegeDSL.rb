@@ -3,6 +3,11 @@
     Installer.instance.last_registration.set_default_or_conditional "Default"
 end
 
+def OpenType(base)
+	Installer.instance.add_registration base
+    Installer.instance.last_registration.set_default_or_conditional "Default"
+end
+
 def Scope (scope)
     Installer.instance.last_registration.set_scope scope
 end

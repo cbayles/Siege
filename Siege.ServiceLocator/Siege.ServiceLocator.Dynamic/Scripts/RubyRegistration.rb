@@ -7,6 +7,7 @@
     attr_reader :condition
     attr_reader :conditiontype
     attr_reader :name
+	attr_reader :isOpenType
 
     def initialize(base)
         @base = base
@@ -44,5 +45,9 @@
     def set_name(name)
         @name = name
     end
+
+	def set_is_open_type
+		@isOpenType = true
+	end
 
 end
