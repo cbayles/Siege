@@ -15,7 +15,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using Siege.ServiceLocator.Native.ConstructionStrategies;
 
@@ -23,13 +22,19 @@ namespace Siege.ServiceLocator.Native.Maps
 {
     public class TypeMap : AbstractMap<TypeMapList>
     {
+        private static readonly object locker = new object();
+
         public void Add(Type from, Type to, string key)
         {
-            if (!entries.ContainsKey(from))
+            if (entries.ContainsKey(@from)) return;
+
+            lock (locker)
             {
-                var list = new TypeMapList(from);
+                if (entries.ContainsKey(@from)) return;
+
+                var list = new TypeMapList(@from);
                 list.Add(to, key);
-                entries.Add(from, list);
+                entries.Add(@from, list);
             }
         }
 
