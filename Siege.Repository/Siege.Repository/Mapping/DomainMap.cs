@@ -4,7 +4,7 @@ namespace Siege.Repository.Mapping
 {
     public class DomainMap
     {
-        private readonly DomainMapper mapper = new DomainMapper();
+        private readonly DomainMapper mapper = new DomainMapper(null);
 
         public Mappings Mappings { get { return mapper.Mappings; } }
 

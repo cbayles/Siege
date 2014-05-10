@@ -58,11 +58,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Database.cs" />
-    <Compile Include="Finders\ICountQuery.cs" />
     <Compile Include="Finders\IQuery.cs" />
-    <Compile Include="Finders\IFindQuery.cs" />
     <Compile Include="Finders\QuerySpecification.cs" />
-    <Compile Include="Finders\Query.cs" />
     <Compile Include="IDatabase.cs" />
     <Compile Include="IDialect.cs" />
     <Compile Include="IExportable.cs" />

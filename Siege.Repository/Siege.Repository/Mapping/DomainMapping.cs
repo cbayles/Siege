@@ -142,7 +142,7 @@ namespace Siege.Repository.Mapping
 
         public DomainMapping MapList(DomainMapper masterMap, PropertyInfo property, Type type, Type parentType, Formatter<PropertyInfo> keyFormatter)
         {
-            var listMapping = new ListMapping(property, type, parentType, keyFormatter);
+            var listMapping = new ListMapping(property, type, parentType);
             this.subMappings.Add(listMapping);
             return this;
         }

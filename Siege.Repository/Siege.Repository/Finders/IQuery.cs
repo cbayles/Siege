@@ -13,14 +13,10 @@
      limitations under the License.
 */
 
-using System.Collections.Generic;
-
 namespace Siege.Repository.Finders
 {
 	public interface IQuery<T>
 	{
-		IList<T> Find();
-		T FindFirstOrDefault();
-		int Count();
+		T Find();
 	}
 }

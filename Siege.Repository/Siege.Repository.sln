@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Siege.Repository", "Siege.Repository\Siege.Repository.csproj", "{DFF4777E-D6A1-4EBE-BDCB-21180AC9EAB1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Siege.Repository.MSSQL", "Siege.Repository.MSSQL\Siege.Repository.MSSQL.csproj", "{2C7FD68D-E2FF-4726-B7F3-0364C4B19485}"
