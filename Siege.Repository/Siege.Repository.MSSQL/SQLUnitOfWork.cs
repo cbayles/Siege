@@ -6,6 +6,13 @@ namespace Siege.Repository.MSSQL
 {
     public class SQLUnitOfWork : IUnitOfWork
     {
+        private readonly string connectionString;
+
+        public SQLUnitOfWork(string connectionString)
+        {
+            this.connectionString = connectionString;
+        }
+
         public void Dispose()
         {
             throw new NotImplementedException();

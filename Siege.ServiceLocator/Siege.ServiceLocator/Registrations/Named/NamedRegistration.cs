@@ -107,11 +107,9 @@ namespace Siege.ServiceLocator.Registrations.Named
 
             public object Resolve(IInstanceResolver locator, IServiceLocatorStore context)
             {
-                var stores = context.All<IResolutionStore>().ToList();
-                var items = new List<IResolutionArgument>();
-                stores.ForEach(x => items.AddRange(x.Items));
+                var store = context.Get<IResolutionStore>();
                 
-                return locator.GetInstance(type, name, items.OfType<IResolutionArgument, IResolutionArgument>());
+                return locator.GetInstance(type, name, store.Items.OfType<IResolutionArgument, IResolutionArgument>());
             }
         }
     }

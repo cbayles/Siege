@@ -53,7 +53,7 @@ namespace Siege.ServiceLocator.Web
 
         public List<TStoreType> All<TStoreType>() where TStoreType : IStore
         {
-            return this.stores.Values.ToList().Where(x => typeof(TStoreType).IsInstanceOfType(x)).Cast<TStoreType>().ToList();
+            return this.stores.Values.ToList().Where(x => x is TStoreType).Cast<TStoreType>().ToList();
         }
 
         public void AddStore<TStoreType>(IStore store) where TStoreType : IStore

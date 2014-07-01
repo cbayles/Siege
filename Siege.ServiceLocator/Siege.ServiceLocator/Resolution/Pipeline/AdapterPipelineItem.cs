@@ -45,13 +45,8 @@ namespace Siege.ServiceLocator.Resolution.Pipeline
                 result.MappedFrom = requestedType;
                 result.MappedTo = type;
 
-                var items = new List<IResolutionArgument>();
+                var items = store.Get<IResolutionStore>().Items;
                 
-                foreach(var item in store.All<IResolutionStore>())
-                {
-                   if(item != null && item.Items != null && item.Items.Count > 0) items.AddRange(item.Items);
-                }
-
                 if(result.Name == null)
                 {
                     result.Result = serviceLocator.GetInstance(type, items.OfType<ConstructorParameter, IResolutionArgument>());
