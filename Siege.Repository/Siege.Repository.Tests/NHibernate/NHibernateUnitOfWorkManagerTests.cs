@@ -13,6 +13,7 @@
      limitations under the License.
 */
 
+using System;
 using NHibernate;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -30,6 +31,7 @@ namespace Siege.Repository.Tests
         private ISessionFactory sessionFactory;
         private ISession session;
         private NHibernateUnitOfWorkManager unitOfWorkManager;
+        private Func<ISessionFactory> sessionFactoryFunc;
 
         [SetUp]
         public void SetUp()
@@ -38,7 +40,8 @@ namespace Siege.Repository.Tests
             session = mocks.DynamicMock<ISession>();
             sessionFactory = mocks.DynamicMock<ISessionFactory>();
             store = new ThreadedUnitOfWorkStore();
-            factory = mocks.Stub<NHibernateUnitOfWorkFactory<NullDatabase>>(sessionFactory);
+            sessionFactoryFunc = () => sessionFactory;
+            factory = mocks.Stub<NHibernateUnitOfWorkFactory<NullDatabase>>(sessionFactoryFunc);
             unitOfWorkManager = mocks.Stub<NHibernateUnitOfWorkManager>();
             unitOfWorkManager.Add(new NullDatabase(factory, store));
         }

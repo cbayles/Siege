@@ -29,6 +29,7 @@ namespace Siege.Repository.Tests
         private ISession session;
         private NHibernateUnitOfWork unitOfWork;
         private ITransaction transaction;
+        private Func<ISessionFactory> sessionFactoryFunc;
 
         [SetUp]
         public void SetUp()
@@ -37,7 +38,8 @@ namespace Siege.Repository.Tests
             factory = mocks.DynamicMock<ISessionFactory>();
             session = mocks.DynamicMock<ISession>();
             transaction = mocks.DynamicMock<ITransaction>();
-            unitOfWork = mocks.Stub<NHibernateUnitOfWork>(factory);
+            sessionFactoryFunc = () => factory;
+            unitOfWork = mocks.Stub<NHibernateUnitOfWork>(sessionFactoryFunc);
         }
 
         [Test]

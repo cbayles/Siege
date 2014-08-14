@@ -13,6 +13,7 @@
      limitations under the License.
 */
 
+using System;
 using NHibernate;
 using Siege.Repository.UnitOfWork;
 
@@ -20,9 +21,9 @@ namespace Siege.Repository.NHibernate
 {
 	public class NHibernateUnitOfWorkFactory<TDatabase> : IUnitOfWorkFactory<TDatabase> where TDatabase : IDatabase
 	{
-		private ISessionFactory sessionFactory;
+        private Func<ISessionFactory> sessionFactory;
 
-		public NHibernateUnitOfWorkFactory(ISessionFactory sessionFactory)
+        public NHibernateUnitOfWorkFactory(Func<ISessionFactory> sessionFactory)
 		{
 			this.sessionFactory = sessionFactory;
 		}
@@ -34,7 +35,7 @@ namespace Siege.Repository.NHibernate
 
 		public void Dispose()
 		{
-			sessionFactory.Dispose();
+			sessionFactory().Dispose();
 		}
 	}
 }

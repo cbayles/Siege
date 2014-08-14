@@ -23,11 +23,11 @@ namespace Siege.Repository.NHibernate
 {
 	public class NHibernateUnitOfWork : IUnitOfWork
 	{
-		private readonly ISessionFactory sessionFactory;
+        private readonly Func<ISessionFactory> sessionFactory;
 		private ISession session;
         private static volatile object locker = new object();
 
-		public NHibernateUnitOfWork(ISessionFactory sessionFactory)
+        public NHibernateUnitOfWork(Func<ISessionFactory> sessionFactory)
 		{
 			this.sessionFactory = sessionFactory;
 		}
@@ -40,7 +40,7 @@ namespace Siege.Repository.NHibernate
 				{
                     lock (locker)
                     {
-                        if (this.session == null) this.session = sessionFactory.OpenSession();
+                        if (this.session == null) this.session = sessionFactory().OpenSession();
                     }
 				}
 

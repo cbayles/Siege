@@ -47,7 +47,7 @@ namespace Siege.Repository.Tests
             sessionFactory = mocks.DynamicMock<ISessionFactory>();
 
             serviceLocator.Register(
-                Using.Convention(new NHibernateConvention<ThreadedUnitOfWorkStore, NullDatabase>(sessionFactory)));
+                Using.Convention(new NHibernateConvention<ThreadedUnitOfWorkStore, NullDatabase>(() => sessionFactory)));
         }
 		
         [Test]

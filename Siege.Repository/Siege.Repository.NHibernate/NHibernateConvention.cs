@@ -27,9 +27,9 @@ namespace Siege.Repository.NHibernate
 		where TUnitOfWorkStore : IUnitOfWorkStore
 		where TDatabase : IDatabase
 	{
-		private readonly ISessionFactory sessionFactory;
+        private readonly Func<ISessionFactory> sessionFactory;
 
-		public NHibernateConvention(ISessionFactory sessionFactory)
+		public NHibernateConvention(Func<ISessionFactory> sessionFactory)
 		{
 			this.sessionFactory = sessionFactory;
 		}
