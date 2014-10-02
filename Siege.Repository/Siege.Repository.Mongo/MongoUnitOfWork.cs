@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Linq;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -36,6 +37,16 @@ namespace Siege.Repository.Mongo
         }
 
         public T Transact<T>(Func<T> action) where T : class
+        {
+            return action();
+        }
+
+        public void Transact(Action action, IsolationLevel isolationLevel)
+        {
+            action();
+        }
+
+        public T Transact<T>(Func<T> action, IsolationLevel isolationLevel) where T : class
         {
             return action();
         }

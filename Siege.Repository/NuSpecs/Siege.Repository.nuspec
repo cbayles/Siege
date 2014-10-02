@@ -2,17 +2,20 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>Siege.Repository</id>
-        <version>1.0.4</version>
+        <version>1.0.6</version>
         <title>Siege.Repository</title>
         <authors>Marcus Bratton</authors>
         <owners>Marcus Bratton</owners>
         <licenseUrl>https://github.com/MarcusTheBold/Siege/blob/master/LICENSE</licenseUrl>
         <projectUrl>https://github.com/MarcusTheBold/Siege/tree/master/Siege.Repository/</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>Repository Pattern Framework for integrating with multiple data sources</description>
+        <description>Siege.Repository</description>
         <copyright>Copyright (c) 2009, 2010, 2011, 2012, Marcus Bratton.  All Rights Reserved</copyright>
+        <dependencies>
+            <dependency id="Siege.ServiceLocator" version="1.1.6" />
+        </dependencies>
     </metadata>
     <files>
-        <file src="..\Siege.Repository\bin\Debug\Siege.Repository.dll" target="lib\net40\Siege.Repository.dll" />
+        <file src="..\Siege.Repository\bin\Release\Siege.Repository.dll" target="lib\net40\Siege.Repository.dll" />
     </files>
 </package>

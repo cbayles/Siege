@@ -55,11 +55,13 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Database.cs" />
     <Compile Include="Finders\IQuery.cs" />
+    <Compile Include="Finders\Query.cs" />
     <Compile Include="Finders\QuerySpecification.cs" />
     <Compile Include="ICommandRepository.cs" />
     <Compile Include="IDatabase.cs" />

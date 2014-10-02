@@ -14,6 +14,8 @@
 */
 
 using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using Siege.Repository.Finders;
 using Siege.Repository.UnitOfWork;
@@ -49,7 +51,12 @@ namespace Siege.Repository
             unitOfWork.For<TDatabase>().Transact(() => transactor(this));
         }
 
-        public T Query<TQuery, T>() where T : class where TQuery : IQuery<T>, new()
+        public void Transact(Action<IRepository<TDatabase>> transactor, IsolationLevel isolationLevel)
+        {
+            unitOfWork.For<TDatabase>().Transact(() => transactor(this), isolationLevel);
+        }
+
+        public IList<T> Query<TQuery, T>() where T : class where TQuery : IQuery<T>, new()
         {
             return new TQuery().Find();
         }
@@ -60,6 +67,28 @@ namespace Siege.Repository
             query.WithUnitOfWork(unitOfWork.For<TDatabase>());
 
             return query.ToIQueryable();
+        }
+
+        [Obsolete("Use Queryable<T> instead.")]
+        public IQuery<T> Query<T>(Func<IQueryable<T>, IQueryable<T>> expression) where T : class
+        {
+            var query = new QuerySpecification<T>();
+
+            query.WithUnitOfWork(unitOfWork.For<TDatabase>());
+            query = new QuerySpecification<T>(expression(query.ToIQueryable()));
+
+            return new Query<T>(query);
+        }
+
+        public IQuery<T> Query<T>(QuerySpecification<T> querySpecification) where T : class
+        {
+            querySpecification.WithUnitOfWork(unitOfWork.For<TDatabase>());
+            return new Query<T>(querySpecification);
+        }
+
+        public IQuery<T> Query<T>() where T : class
+        {
+            return Query(new QuerySpecification<T>());
         }
     }
 }

@@ -14,6 +14,7 @@
 */
 
 using System;
+using System.Data;
 using System.Linq;
 
 namespace Siege.Repository.UnitOfWork
@@ -21,8 +22,10 @@ namespace Siege.Repository.UnitOfWork
 	public interface IUnitOfWork : IDisposable
 	{
         T Get<T>(object id) where T : class;
-		void Transact(Action action);
+        void Transact(Action action);
+        void Transact(Action action, IsolationLevel isolationLevel);
         T Transact<T>(Func<T> action) where T : class;
+        T Transact<T>(Func<T> action, IsolationLevel isolationLevel) where T : class;
         void Save<T>(T item) where T : class;
         void Delete<T>(T item) where T : class;
         IQueryable<T> Query<T>() where T : class;

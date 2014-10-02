@@ -120,10 +120,6 @@
       <Project>{7BA2681D-C6F0-4EA3-980C-18F1F7DAE2A1}</Project>
       <Name>Siege.Repository.EntityFramework</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Siege.Repository.MSSQL\Siege.Repository.MSSQL.csproj">
-      <Project>{2C7FD68D-E2FF-4726-B7F3-0364C4B19485}</Project>
-      <Name>Siege.Repository.MSSQL</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Siege.Repository.NHibernate\Siege.Repository.NHibernate.csproj">
       <Project>{102E9EC2-B159-453A-B5CD-B308F5FC6F98}</Project>
       <Name>Siege.Repository.NHibernate</Name>

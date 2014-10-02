@@ -14,6 +14,7 @@
 */
 
 using System;
+using System.Data;
 using System.Linq;
 using NHibernate;
 using NHibernate.Linq;
@@ -70,6 +71,16 @@ namespace Siege.Repository.NHibernate
 
         public void Transact(Action action)
         {
+            Transact(action, IsolationLevel.Serializable);
+        }
+
+        public T Transact<T>(Func<T> action) where T : class
+        {
+            return Transact(action, IsolationLevel.Serializable);
+		}
+
+        public void Transact(Action action, IsolationLevel isolationLevel)
+        {
             if (Session.Transaction.IsActive)
             {
                 action();
@@ -87,36 +98,36 @@ namespace Siege.Repository.NHibernate
                     {
                         if (transaction != null) transaction.Rollback();
                         session = null;
-						throw;
+                        throw;
                     }
                 }
             }
         }
 
-        public T Transact<T>(Func<T> action) where T : class
-		{
+        public T Transact<T>(Func<T> action, IsolationLevel isolationLevel) where T : class
+        {
             if (Session.Transaction.IsActive)
             {
                 T result = action();
                 return result;
             }
 
-			using (var transaction = this.Session.BeginTransaction())
-			{
-				try
-				{
-					T result = action();
-					transaction.Commit();
-					return result;
-				}
-				catch (Exception)
-				{
-					if (transaction != null) transaction.Rollback();
+            using (var transaction = this.Session.BeginTransaction(isolationLevel))
+            {
+                try
+                {
+                    T result = action();
+                    transaction.Commit();
+                    return result;
+                }
+                catch (Exception)
+                {
+                    if (transaction != null) transaction.Rollback();
                     session = null;
-					throw;
-				}
-			}
-		}
+                    throw;
+                }
+            }
+        }
 
 		public void Dispose()
 		{

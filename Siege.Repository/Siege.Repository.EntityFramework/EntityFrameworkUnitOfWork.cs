@@ -32,7 +32,12 @@ namespace Siege.Repository.EntityFramework
             this.context = context;
 		}
 
-        public void Save<T>(T item) where T : class
+	    public T Transact<T>(Func<T> action, System.Data.IsolationLevel isolationLevel) where T : class
+	    {
+	        return Transact(action);
+	    }
+
+	    public void Save<T>(T item) where T : class
 		{
 		    Transact(() => 
             {
@@ -71,7 +76,12 @@ namespace Siege.Repository.EntityFramework
             }
         }
 
-        public T Transact<T>(Func<T> action) where T : class
+	    public void Transact(Action action, System.Data.IsolationLevel isolationLevel)
+	    {
+	        Transact(action);
+	    }
+
+	    public T Transact<T>(Func<T> action) where T : class
 		{
             using (var scope = new TransactionScope())
 			{
@@ -81,6 +91,27 @@ namespace Siege.Repository.EntityFramework
 				return result;
 			}
 		}
+
+        public void Transact(Action action, IsolationLevel isolationLevel)
+        {
+            using (var scope = new TransactionScope())
+            {
+                action();
+                context.SaveChanges();
+                scope.Complete();
+            }
+        }
+
+        public T Transact<T>(Func<T> action, IsolationLevel isolationLevel) where T : class
+        {
+            using (var scope = new TransactionScope())
+            {
+                T result = action();
+                context.SaveChanges();
+                scope.Complete();
+                return result;
+            }
+        }
 
 		public void Dispose()
 		{
