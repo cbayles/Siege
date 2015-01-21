@@ -191,8 +191,6 @@ namespace Siege.ServiceLocator.UnitTests.ContextualTests
 		[Test]
 		public void ShouldChangeSelectionAsContextIsApplied()
 		{
-            Assert.AreEqual(0, locator.Store.Get<IExecutionStore>().RequestedTypes.Count);
-
 			locator
                 .Register(Given<ITestController>.Then<TestController>())
 				.Register(Given<IBaseService>.Then<DefaultTestService>())

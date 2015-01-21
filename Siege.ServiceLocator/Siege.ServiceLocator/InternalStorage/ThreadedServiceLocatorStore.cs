@@ -21,12 +21,39 @@ using Siege.ServiceLocator.Registrations.InjectionOverrides;
 
 namespace Siege.ServiceLocator.InternalStorage
 {
+    public class ResolutionScope : IDisposable
+    {
+        private readonly IServiceLocatorStore store;
+
+        public ResolutionScope(IServiceLocatorStore store)
+        {
+            this.store = store;
+        }
+
+        public virtual void Dispose()
+        {
+            store.ClearScope();
+        }
+    }
+
+    public class NullScope : ResolutionScope
+    {
+        public NullScope(IServiceLocatorStore store) : base(store)
+        {
+        }
+
+        public override void Dispose()
+        {
+            
+        }
+    }
+
     public class ThreadedServiceLocatorStore : IServiceLocatorStore
     {
+        [ThreadStatic] private static ResolutionScope scope;
         private readonly Dictionary<Type, IStore> stores = new Dictionary<Type, IStore>();
 
-        public ThreadedServiceLocatorStore()
-            : this(new ThreadLocalStore())
+        public ThreadedServiceLocatorStore() : this(new ThreadLocalStore())
         {
         }
 
@@ -34,7 +61,6 @@ namespace Siege.ServiceLocator.InternalStorage
         {
             AddStore<IContextStore>(store);
             AddStore<IResolutionStore>(new ThreadedResolutionStore());
-            AddStore<IExecutionStore>(ThreadedExecutionStore.New(this));
             AddStore<IAwarenessStore>(new AwarenessStore());
             AddStore<IInjectionOverrideStore>(new InjectionOverrideStore());
         }
@@ -51,7 +77,25 @@ namespace Siege.ServiceLocator.InternalStorage
 
         public List<TStoreType> All<TStoreType>() where TStoreType : IStore
         {
-            return this.stores.Values.ToList().Where(x => typeof(TStoreType).IsInstanceOfType(x)).Cast<TStoreType>().ToList();
+            return this.stores.Values.ToList().Where(x => x is TStoreType).Cast<TStoreType>().ToList();
+        }
+
+        public void ClearScope()
+        {
+            SetStore<IResolutionStore>(new ThreadedResolutionStore());
+            scope = null;
+        }
+
+        public ResolutionScope GetResolutionScope()
+        {
+            var firstRun = false;
+            if (scope == null)
+            {
+                scope = new ResolutionScope(this);
+                firstRun = true;
+            }
+
+            return !firstRun ? new NullScope(this) : scope;
         }
 
         public void AddStore<TStoreType>(IStore store) where TStoreType : IStore

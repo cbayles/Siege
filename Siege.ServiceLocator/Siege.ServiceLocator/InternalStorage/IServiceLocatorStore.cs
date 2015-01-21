@@ -24,5 +24,7 @@ namespace Siege.ServiceLocator.InternalStorage
         void SetStore<TStoreType>(IStore store) where TStoreType : IStore;
         TStoreType Get<TStoreType>() where TStoreType : IStore;
         List<TStoreType> All<TStoreType>() where TStoreType : IStore;
+        void ClearScope();
+        ResolutionScope GetResolutionScope();
     }
 }

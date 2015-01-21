@@ -9,10 +9,10 @@ namespace Siege.ServiceLocator.WCF
 {
     public class WcfServiceLocatorStore : IServiceLocatorStore
     {
+        [ThreadStatic] private static ResolutionScope scope;
         private readonly Dictionary<Type, IStore> stores = new Dictionary<Type, IStore>();
 
-        public WcfServiceLocatorStore()
-            : this(new WcfContextStore())
+        public WcfServiceLocatorStore() : this(new WcfContextStore())
         {
         }
 
@@ -20,7 +20,6 @@ namespace Siege.ServiceLocator.WCF
         {
             AddStore<IContextStore>(store);
             AddStore<IResolutionStore>(new WcfResolutionStore());
-            AddStore<IExecutionStore>(WcfContextExecutionStore.New(this));
             AddStore<IAwarenessStore>(new AwarenessStore());
             AddStore<IInjectionOverrideStore>(new InjectionOverrideStore());
         }
@@ -39,6 +38,27 @@ namespace Siege.ServiceLocator.WCF
         public List<TStoreType> All<TStoreType>() where TStoreType : IStore
         {
             return this.stores.Values.ToList().Where(x => x is TStoreType).Cast<TStoreType>().ToList();
+        }
+
+        public void ClearScope()
+        {
+            SetStore<IResolutionStore>(new WcfResolutionStore());
+            WcfOperationContext.Current.Items["ResolutionScope"] = null;
+        }
+
+        public ResolutionScope GetResolutionScope()
+        {
+            var firstRun = false;
+            var scope = (ResolutionScope)WcfOperationContext.Current.Items["ResolutionScope"];
+
+            if (scope == null)
+            {
+                firstRun = true;
+                scope = new ResolutionScope(this);
+                WcfOperationContext.Current.Items["ResolutionScope"] = scope;
+            }
+
+            return firstRun ? scope : new NullScope(this);
         }
 
         public void AddStore<TStoreType>(IStore store) where TStoreType : IStore

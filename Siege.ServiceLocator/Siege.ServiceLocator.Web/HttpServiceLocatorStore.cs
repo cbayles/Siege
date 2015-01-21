@@ -16,6 +16,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using Siege.ServiceLocator.InternalStorage;
 using Siege.ServiceLocator.Registrations.ConditionalAwareness;
 using Siege.ServiceLocator.Registrations.InjectionOverrides;
@@ -26,8 +27,7 @@ namespace Siege.ServiceLocator.Web
     {
         private readonly Dictionary<Type, IStore> stores = new Dictionary<Type, IStore>();
 
-        public HttpServiceLocatorStore()
-            : this(new ThreadLocalStore())
+        public HttpServiceLocatorStore() : this(new HttpSessionStore())
         {
         }
 
@@ -35,7 +35,6 @@ namespace Siege.ServiceLocator.Web
         {
             AddStore<IContextStore>(store);
             AddStore<IResolutionStore>(new HttpResolutionStore());
-            AddStore<IExecutionStore>(HttpContextExecutionStore.New(this));
             AddStore<IAwarenessStore>(new AwarenessStore());
             AddStore<IInjectionOverrideStore>(new InjectionOverrideStore());
         }
@@ -54,6 +53,27 @@ namespace Siege.ServiceLocator.Web
         public List<TStoreType> All<TStoreType>() where TStoreType : IStore
         {
             return this.stores.Values.ToList().Where(x => x is TStoreType).Cast<TStoreType>().ToList();
+        }
+
+        public void ClearScope()
+        {
+            SetStore<IResolutionStore>(new HttpResolutionStore());
+            HttpContext.Current.Items["ResolutionScope"] = null;
+        }
+
+        public ResolutionScope GetResolutionScope()
+        {
+            var firstRun = false;
+            var scope = (ResolutionScope)HttpContext.Current.Items["ResolutionScope"];
+
+            if (scope == null)
+            {
+                firstRun = true;
+                scope = new ResolutionScope(this);
+                HttpContext.Current.Items["ResolutionScope"] = scope;
+            }
+
+            return firstRun ? scope : new NullScope(this);
         }
 
         public void AddStore<TStoreType>(IStore store) where TStoreType : IStore

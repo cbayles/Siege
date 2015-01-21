@@ -95,10 +95,6 @@
     <Compile Include="Registrations\ConditionalAwareness\ContextualRegistrationStore.cs" />
     <Compile Include="Registrations\ConditionalAwareness\ContextualRegistrationTemplate.cs" />
     <Compile Include="Registrations\ConditionalAwareness\IAwarenessStore.cs" />
-    <Compile Include="Registrations\ConditionalInjection\InjectionInstanceRegistration.cs" />
-    <Compile Include="Registrations\ConditionalInjection\InjectionRegistration.cs" />
-    <Compile Include="Registrations\ConditionalInjection\InjectionRule.cs" />
-    <Compile Include="Registrations\ConditionalInjection\InjectionRuleEvaluationStrategy.cs" />
     <Compile Include="Registrations\Conventions\IConvention.cs" />
     <Compile Include="Registrations\Conventions\Using.cs" />
     <Compile Include="Registrations\Decorator\ConditionalDecoratorRegistration.cs" />
@@ -140,11 +136,7 @@
     <Compile Include="RegistrationTemplates\IRegistrationTemplate.cs" />
     <Compile Include="RegistrationTemplates\Named\NamedRegistrationTemplate.cs" />
     <Compile Include="RegistrationTemplates\OpenGenerics\OpenGenericRegistrationTemplate.cs" />
-    <Compile Include="EventHandlers\ITypeRequester.cs" />
-    <Compile Include="EventHandlers\TypeRequestedEventHandler.cs" />
-    <Compile Include="EventHandlers\TypeResolvedEventHandler.cs" />
     <Compile Include="Exceptions\RegistrationNotFoundException.cs" />
-    <Compile Include="EventHandlers\ITypeResolver.cs" />
     <Compile Include="ExtensionMethods\IResolutionArgumentExtensions.cs" />
     <Compile Include="Foundation.cs" />
     <Compile Include="RegistrationPolicies\AbstractRegistrationPolicy.cs" />
@@ -165,8 +157,6 @@
     <Compile Include="ResolutionRules\ConditionalActivationRule.cs" />
     <Compile Include="ResolutionRules\IConditionalActivationRule.cs" />
     <Compile Include="InternalStorage\IContextStore.cs" />
-    <Compile Include="InternalStorage\IExecutionStore.cs" />
-    <Compile Include="InternalStorage\ThreadedExecutionStore.cs" />
     <Compile Include="Registrations\PostResolution\PostResolutionRegistration.cs" />
     <Compile Include="Registrations\Conditional\ConditionalRegistration.cs" />
     <Compile Include="Registrations\Conditional\ConditionalInstanceRegistration.cs" />

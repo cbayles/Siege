@@ -14,14 +14,13 @@
 */
 
 using System;
-using Siege.ServiceLocator.EventHandlers;
 using Siege.ServiceLocator.InternalStorage;
 using Siege.ServiceLocator.Registrations.Named;
 using Siege.ServiceLocator.Registrations.Stores;
 
 namespace Siege.ServiceLocator.Resolution.Pipeline
 {
-    public class DefaultPipelineItem : BasePipelineItem<DefaultRegistrationStore>, ITypeRequester, ITypeResolver
+    public class DefaultPipelineItem : BasePipelineItem<DefaultRegistrationStore>
     {
         private readonly PostResolutionPipeline pipeline;
         private readonly DefaultRegistrationStore registrationStore;
@@ -29,8 +28,6 @@ namespace Siege.ServiceLocator.Resolution.Pipeline
         public DefaultPipelineItem(Foundation foundation, IServiceLocatorAdapter serviceLocator, IServiceLocatorStore store, PostResolutionPipeline pipeline) : base(foundation, serviceLocator, store)
         {
             this.pipeline = pipeline;
-            this.store.Get<IExecutionStore>().WireEvent((ITypeRequester)this);
-            this.store.Get<IExecutionStore>().WireEvent((ITypeResolver)this);
             this.registrationStore = foundation.StoreFor<DefaultRegistrationStore>();
         }
 
@@ -47,7 +44,6 @@ namespace Siege.ServiceLocator.Resolution.Pipeline
                 if (registrations == null) return null;
 
                 var mappedToType = registrations[0].GetMappedToType();
-                if(TypeRequested != null) TypeRequested(mappedToType);
 
                 result.Name = registrations[0] is INamedRegistration
                                   ? ((INamedRegistration)registrations[0]).Key
@@ -58,13 +54,8 @@ namespace Siege.ServiceLocator.Resolution.Pipeline
 
                 if(result.Result != null) result = pipeline.Execute(result);
 
-                if (result.Result != null && TypeResolved != null) TypeResolved(type);
-
                 return result;
             };
         }
-
-        public event TypeRequestedEventHandler TypeRequested;
-        public event TypeResolvedEventHandler TypeResolved;
     }
 }

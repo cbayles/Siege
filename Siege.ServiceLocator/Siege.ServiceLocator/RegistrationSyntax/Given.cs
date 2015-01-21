@@ -16,7 +16,6 @@
 using System;
 using System.Collections.Generic;
 using Siege.ServiceLocator.Registrations;
-using Siege.ServiceLocator.Registrations.ConditionalInjection;
 using Siege.ServiceLocator.Registrations.Decorator;
 using Siege.ServiceLocator.Registrations.Default;
 using Siege.ServiceLocator.Registrations.FactorySupport;
@@ -109,15 +108,6 @@ namespace Siege.ServiceLocator.RegistrationSyntax
             var registration = new ConstructorRegistration { Arguments = arguments };
 
             return serviceLocator => serviceLocator.Register(registration);
-        }
-
-        public static InjectionRule<TService> WhenInjectingInto<TResolvedType>()
-        {
-            var registration = new InjectionRule<TService>();
-
-            registration.BasedOn<TResolvedType>();
-
-            return registration;
         }
 
         public static MultiConditionalActivationRule<TService> When(Action<MultiConditionalActivationRule<TService>> generator)

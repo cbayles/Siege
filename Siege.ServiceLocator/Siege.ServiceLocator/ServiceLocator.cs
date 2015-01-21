@@ -15,9 +15,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using Siege.ServiceLocator.ExtensionMethods;
 using Siege.ServiceLocator.InternalStorage;
 using Siege.ServiceLocator.RegistrationPolicies;
@@ -59,7 +57,6 @@ namespace Siege.ServiceLocator
             serviceLocator.RegisterInstance(typeof(Foundation), this.foundation);
             serviceLocator.RegisterInstance(typeof(IServiceLocatorStore), this.store);
             serviceLocator.RegisterInstance(typeof(IContextStore), this.store.Get<IContextStore>());
-            serviceLocator.RegisterInstance(typeof(IExecutionStore), this.store.Get<IExecutionStore>());
             serviceLocator.RegisterInstance(typeof(IResolutionStore), this.store.Get<IResolutionStore>());
 
             var binPath = AppDomain.CurrentDomain.SetupInformation.PrivateBinPath
@@ -125,12 +122,18 @@ namespace Siege.ServiceLocator
 
         public TService GetInstance<TService>(params IResolutionArgument[] arguments)
         {
-            return GetInstance<TService>(typeof (TService), arguments);
+            using (var scope = store.GetResolutionScope())
+            {
+                return GetInstance<TService>(typeof (TService), arguments);
+            }
         }
 
         public TService GetInstance<TService>(Type type, params IResolutionArgument[] arguments)
         {
-            return (TService) GetInstance(type, arguments);
+            using (var scope = store.GetResolutionScope())
+            {
+                return (TService) GetInstance(type, arguments);
+            }
         }
 
         public object GetInstance(Type type)

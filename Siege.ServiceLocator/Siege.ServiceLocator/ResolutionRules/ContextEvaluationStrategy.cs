@@ -36,24 +36,30 @@ namespace Siege.ServiceLocator.ResolutionRules
 
         protected static List<object> MergeContextItems(IServiceLocatorStore context)
         {
-            var contextItems = new List<object>();
-            var resolutionItems = context.Get<IResolutionStore>().Items;
-            
-            for (int i = 0; i < resolutionItems.Count; i++)
+            var contextItems = new List<object>(); 
+            var stores = context.All<IResolutionStore>().ToList();
+            var resolutionItems = new List<IResolutionArgument>();
+             
+            stores.ForEach(x => resolutionItems.AddRange(x.Items));
+                
+             for (int i = 0; i < resolutionItems.Count; i++)
+             {
+                 var argument = resolutionItems[i];
+                 if (argument is ContextArgument) contextItems.Add(((ContextArgument) argument).ContextItem);
+             }
+ 
+            foreach (IContextStore contextStore in context.All<IContextStore>())
             {
-                var argument = resolutionItems[i];
-                if (argument is ContextArgument) contextItems.Add(((ContextArgument) argument).ContextItem);
-            }
-
-            var items = context.Get<IContextStore>().Items;
-
-            for (int i = 0; i < items.Count; i++)
-            {
-                var item = items[i];
-                contextItems.Add(item);
-            }
-
-            return contextItems;
+                var items = contextStore.Items;
+ 
+                for (int i = 0; i < items.Count; i++)
+                {
+                    var item = items[i];
+                    contextItems.Add(item);
+                }
+             }
+ 
+             return contextItems;
         }
     }
 }

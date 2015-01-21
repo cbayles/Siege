@@ -70,12 +70,14 @@ namespace Siege.ServiceLocator.Registrations
             {
                 this.mapsToType = mapsToType;
             }
-
+            
             public object Resolve(IInstanceResolver locator, IServiceLocatorStore context)
             {
-                var store = context.Get<IResolutionStore>();
-                
-                return locator.GetInstance(mapsToType, store.Items.OfType<IResolutionArgument, IResolutionArgument>());
+                var stores = context.All<IResolutionStore>().ToList();
+                var items = new List<IResolutionArgument>();
+                stores.ForEach(x => items.AddRange(x.Items));
+
+                return locator.GetInstance(mapsToType, items.OfType<IResolutionArgument, IResolutionArgument>());
             }
         }
     }

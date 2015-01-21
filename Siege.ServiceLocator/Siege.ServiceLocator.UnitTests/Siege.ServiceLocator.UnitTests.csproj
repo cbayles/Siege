@@ -201,10 +201,8 @@
     <Compile Include="ContextualTests\WindsorContextTests.cs" />
     <Compile Include="Adapters\NinjectAdapterTests.cs" />
     <Compile Include="DecoratorTests.cs" />
-    <Compile Include="ExecutionStoreTests.cs" />
     <Compile Include="FactoryTests.cs" />
     <Compile Include="InitializationTests.cs" />
-    <Compile Include="InjectorTests.cs" />
     <Content Include="Installers\ConditionalGenericInstanceRegistrationTest.rb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

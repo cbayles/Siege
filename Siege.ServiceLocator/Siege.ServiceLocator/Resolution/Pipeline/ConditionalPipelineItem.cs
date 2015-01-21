@@ -15,7 +15,6 @@
 
 using System;
 using System.Collections.Generic;
-using Siege.ServiceLocator.EventHandlers;
 using Siege.ServiceLocator.InternalStorage;
 using Siege.ServiceLocator.Registrations;
 using Siege.ServiceLocator.Registrations.Named;
@@ -23,15 +22,13 @@ using Siege.ServiceLocator.Registrations.Stores;
 
 namespace Siege.ServiceLocator.Resolution.Pipeline
 {
-    public class ConditionalPipelineItem : BasePipelineItem<ConditionalRegistrationStore>, ITypeRequester, ITypeResolver
+    public class ConditionalPipelineItem : BasePipelineItem<ConditionalRegistrationStore>
     {
         private readonly PostResolutionPipeline pipeline;
         private readonly ConditionalRegistrationStore registrationStore;
         public ConditionalPipelineItem(Foundation foundation, IServiceLocatorAdapter serviceLocator, IServiceLocatorStore store, PostResolutionPipeline pipeline) : base(foundation, serviceLocator, store)
         {
             this.pipeline = pipeline;
-            this.store.Get<IExecutionStore>().WireEvent((ITypeRequester)this);
-            this.store.Get<IExecutionStore>().WireEvent((ITypeResolver)this);
             this.registrationStore = foundation.StoreFor<ConditionalRegistrationStore>();
         }
 
@@ -53,7 +50,6 @@ namespace Siege.ServiceLocator.Resolution.Pipeline
                     if (registration.IsValid(serviceLocator, store))
                     {
                         var mappedToType = registration.GetMappedToType();
-                        if (TypeRequested != null) TypeRequested(mappedToType);
 
                         result.Name = registration is INamedRegistration
                                           ? ((INamedRegistration) registration).Key
@@ -61,9 +57,7 @@ namespace Siege.ServiceLocator.Resolution.Pipeline
                         result.MappedTo = mappedToType;
                         result.MappedFrom = registration.GetMappedFromType();
                         result.Result = Resolve(registration);
-
-                        if (result.Result != null && TypeResolved != null) TypeResolved(type);
-
+                        
                         if(result.Result != null) result = pipeline.Execute(result);
                         return result;
                     }
@@ -72,8 +66,5 @@ namespace Siege.ServiceLocator.Resolution.Pipeline
                 return null;
             };
         }
-
-        public event TypeRequestedEventHandler TypeRequested;
-        public event TypeResolvedEventHandler TypeResolved;
     }
 }
