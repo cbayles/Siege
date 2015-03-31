@@ -158,6 +158,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -329,6 +330,10 @@
     <ProjectReference Include="..\Siege.ServiceLocator.UnityAdapter\Siege.ServiceLocator.UnityAdapter.csproj">
       <Project>{B0FAF7F3-2EAC-40BA-995B-06E71BBADB0F}</Project>
       <Name>Siege.ServiceLocator.UnityAdapter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Siege.ServiceLocator.Web\Siege.ServiceLocator.Web.csproj">
+      <Project>{6A195833-5013-422B-B87D-70FB70A0B79C}</Project>
+      <Name>Siege.ServiceLocator.Web</Name>
     </ProjectReference>
     <ProjectReference Include="..\Siege.ServiceLocator.WindsorAdapter\Siege.ServiceLocator.WindsorAdapter.csproj">
       <Project>{20AE3922-30F4-47C5-A86B-C27E320BDE65}</Project>
