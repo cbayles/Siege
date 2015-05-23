@@ -13,7 +13,10 @@
      limitations under the License.
 */
 
+using System.Web;
 using Siege.ServiceLocator.InternalStorage;
+using Siege.ServiceLocator.RegistrationSyntax;
+using Siege.ServiceLocator.Web.RegistrationPolicies;
 
 namespace Siege.ServiceLocator.Web
 {
@@ -21,6 +24,8 @@ namespace Siege.ServiceLocator.Web
     {
         protected HttpServiceLocator(IServiceLocatorAdapter serviceLocator, IServiceLocatorStore store) : base(serviceLocator, store)
         {
+            serviceLocator.Register(typeof(PerHttpRequest), typeof(PerHttpRequest));
+            Register(Given<HttpContextBase>.ConstructWith(x => new HttpContextWrapper(HttpContext.Current)));
         }
 
         public HttpServiceLocator(IServiceLocatorAdapter serviceLocator, IContextStore store)

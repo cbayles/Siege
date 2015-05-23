@@ -13,10 +13,19 @@
      limitations under the License.
 */
 
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Web;
+using Microsoft.Practices.Unity;
 using NUnit.Framework;
+using Rhino.Mocks;
+using Siege.ServiceLocator.Exceptions;
 using Siege.ServiceLocator.RegistrationPolicies;
 using Siege.ServiceLocator.RegistrationSyntax;
 using Siege.ServiceLocator.UnitTests.TestClasses;
+using Siege.ServiceLocator.Web.RegistrationPolicies;
+using StructureMap;
 
 namespace Siege.ServiceLocator.UnitTests
 {
@@ -43,6 +52,69 @@ namespace Siege.ServiceLocator.UnitTests
             var secondInstance = locator.GetInstance<ITestInterface>();
 
             Assert.AreSame(firstInstance, secondInstance);
+        }
+
+        [Test]
+        public void RegisteringHttpRequestShouldStoreInHttpContextItems()
+        {
+            var items = new Hashtable();
+
+            var httpContextBase = MockRepository.GenerateMock<HttpContextBase>();
+            httpContextBase.Stub(x => x.Items)
+                .Return(items);
+
+            locator.Register(Given<PerHttpRequest>.Then<PerHttpRequest>());
+            locator.Register(Given<HttpContextBase>.ConstructWith(x => httpContextBase));
+
+            locator.Register<PerHttpRequest>(Given<ITestInterface>.Then<TestCase1>());
+
+            var returned = locator.GetInstance<ITestInterface>();
+
+            foreach (DictionaryEntry item in items)
+            {
+                Assert.AreSame(returned,item.Value);
+            }
+        }
+
+
+        [Test]
+        public void RegisteringHttpRequestShouldReturnItemInHttpContextItems()
+        {
+            var items = new Hashtable();
+
+            var httpContextBase = MockRepository.GenerateMock<HttpContextBase>();
+            httpContextBase.Stub(x => x.Items)
+                .Return(items);
+
+            locator.Register(Given<PerHttpRequest>.Then<PerHttpRequest>());
+            locator.Register(Given<HttpContextBase>.ConstructWith(x => httpContextBase));
+
+            locator.Register<PerHttpRequest>(Given<ITestInterface>.Then<TestCase1>());
+
+            var returnedFirst = locator.GetInstance<ITestInterface>();
+            var returnedSecond = locator.GetInstance<ITestInterface>();
+
+            Assert.AreSame(returnedFirst, returnedSecond);
+        }
+
+        [Test]
+        public void RegisteringHttpRequestShouldNotAddedToHttpContexItemsOnSecondRequest()
+        {
+            var items = new Hashtable();
+
+            var httpContextBase = MockRepository.GenerateMock<HttpContextBase>();
+            httpContextBase.Stub(x => x.Items)
+                .Return(items);
+
+            locator.Register(Given<PerHttpRequest>.Then<PerHttpRequest>());
+            locator.Register(Given<HttpContextBase>.ConstructWith(x => httpContextBase));
+
+            locator.Register<PerHttpRequest>(Given<ITestInterface>.Then<TestCase1>());
+
+            locator.GetInstance<ITestInterface>();
+            locator.GetInstance<ITestInterface>();
+
+            Assert.AreEqual(1,items.Count);
         }
     }
 }

@@ -95,6 +95,7 @@
     <Compile Include="HttpServiceLocator.cs" />
     <Compile Include="HttpServiceLocatorStore.cs" />
     <Compile Include="ModelBinding.cs" />
+    <Compile Include="RegistrationPolicies\PerHttpRequest.cs" />
     <Compile Include="ServiceLocatorControllerFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceLocatorHttpApplication.cs" />
