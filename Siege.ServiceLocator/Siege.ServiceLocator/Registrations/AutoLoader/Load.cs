@@ -44,24 +44,36 @@ namespace Siege.ServiceLocator.Registrations.AutoLoader
                     if (!file.EndsWith(".dll") && !file.EndsWith(".exe")) return;
                     if (loadedAssembles.Any(x => x.FullName == Path.GetFileName(file))) return;
 
-                    Assembly.LoadFrom(file);
+                    try
+                    {
+                        Assembly.LoadFrom(file);
+                    }
+                    catch (BadImageFormatException ex)
+                    {
+                    }
                 });
 
                 files.ForEach(file =>
                 {
                     if (!file.EndsWith(".dll") && !file.EndsWith(".exe")) return;
 
-                    var types = Assembly.LoadFrom(file).GetTypes().ToList();
-
-                    types.ForEach(type =>
+                    try
                     {
-                        if(type.GetInterfaces().Contains(typeof(IAutoloader)))
-                        {
-                            var instance = (IAutoloader)type.GetConstructor(new Type[] {}).Invoke(new object[] {});
+                        var types = Assembly.LoadFrom(file).GetTypes().ToList();
 
-                            locator.Register(instance.Load(scripts));
-                        }
-                    });
+                        types.ForEach(type =>
+                        {
+                            if (type.GetInterfaces().Contains(typeof(IAutoloader)))
+                            {
+                                var instance = (IAutoloader)type.GetConstructor(new Type[] { }).Invoke(new object[] { });
+
+                                locator.Register(instance.Load(scripts));
+                            }
+                        });
+                    }
+                    catch (BadImageFormatException ex)
+                    {
+                    }
                 });
             };
         }
